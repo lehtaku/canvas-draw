@@ -19,6 +19,20 @@ $(document).ready(function () {
     $('.tool-btn#' + currentTool).addClass('active focus')
     $('.size-btn#' + ctx.lineWidth).addClass('active focus')
     $('.size-dot').css('background-color', ctx.strokeStyle)
+    setCursor()
+
+
+    function setCursor() {
+        let fixingNum = ctx.lineWidth / 2
+        if (currentTool === 'brush') {
+            let cursorName = currentColor.toUpperCase().slice(1) + '-' + ctx.lineWidth + '.png'
+            $('#canvas').css('cursor', `url('./cursors/${cursorName}') ${fixingNum} ${fixingNum}, auto`)
+            ctx.strokeStyle = currentColor
+        } else {
+            $('#canvas').css('cursor', `url('./cursors/eraser.png') 8 40, auto`)
+            ctx.strokeStyle = '#FFFFFF'
+        }
+    }
 
     /*
      * Toolbar
@@ -26,16 +40,17 @@ $(document).ready(function () {
     $('.color-btn').click(function () {
         $(this).addClass('active focus')
         $('.color-btn#' + ctx.strokeStyle.slice(1).toUpperCase()).removeClass('active focus')
-
         currentColor = '#' + $(this).attr('id')
         $('.size-dot').css('background-color', currentColor)
         ctx.strokeStyle = currentColor
+        setCursor()
     })
 
     $('.tool-btn').click(function () {
         $(this).addClass('active focus')
         $('.tool-btn#' + currentTool).removeClass('active focus')
         currentTool = $(this).attr('id')
+        setCursor()
     })
 
     $('.size-btn').click(function () {
@@ -43,25 +58,21 @@ $(document).ready(function () {
         $('.size-btn#' + ctx.lineWidth).removeClass('active focus')
         let btnId = $(this).attr('id')
         ctx.lineWidth = parseInt(btnId)
+       setCursor()
     })
 
     /*
      * Canvas
      */
-    $('#canvas-wrapper').mouseenter(function () {
+    $('#canvas-wrapper')
+        .mouseenter(function () {
         mouseDown = false
-        if (currentTool === 'eraser') {
-            ctx.strokeStyle = '#FFFFFF'
-        } else {
-            ctx.strokeStyle = currentColor
-        }
     })
 
     $('#drawCanvas').mousedown(function (event) {
         mouseDown = true
-        let fixerNum = (ctx.lineWidth / 3)
         ctx.beginPath()
-        ctx.arc(event.offsetX - fixerNum, event.offsetY - fixerNum, 1, 0, 2 * Math.PI)
+        ctx.arc(event.offsetX, event.offsetY, 1, 0, 2 * Math.PI)
         ctx.stroke()
 
         mouseX = event.offsetX
@@ -77,10 +88,9 @@ $(document).ready(function () {
     })
 
     function drawLine(fromX, fromY, toX, toY) {
-        let fixerNum = (ctx.lineWidth / 3)
         ctx.beginPath()
-        ctx.moveTo(fromX - fixerNum, fromY - fixerNum)
-        ctx.lineTo(toX - fixerNum, toY - fixerNum)
+        ctx.moveTo(fromX, fromY)
+        ctx.lineTo(toX, toY)
         ctx.stroke()
     }
 

@@ -91,7 +91,3 @@ body {
     width: 800px;
     height: 600px;
 }
-
-#drawCanvas {
-    cursor: pointer;
-}
