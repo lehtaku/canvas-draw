@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Draw</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Draw - Demo</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -10,115 +14,62 @@
 </head>
 <body>
 
-<div class="column">
-    <button class="color-button" id="#FF4136" style="background-color: #FF4136; color: #800600">Red</button>
-    <button class="color-button" id="#0074D9" style="background-color: #0074D9; color: #B3DBFF">Blue</button>
-    <button class="color-button" id="#FFDC00" style="background-color: #FFDC00; color: #0E3E14">Yellow</button>
-    <button class="color-button" id="#2ECC40" style="background-color: #2ECC40; color: #665800">Green</button>
-</div>
+<div class="container toolbar">
+    <div class="row h-100">
 
-<div class="column">
-    <div class="slide-container">
-        <h4 id="brush-size-text">Brush size: 8px</h4>
-        <input type="range" min="1" max="5" value="2" class="size-slider" id="brush-size">
+        <div class="col-sm my-auto">
+            <button class="btn color-btn" type="button" id="FF4136" style="background-color: #FF4136"></button>
+            <button class="btn color-btn" type="button" id="0074D9" style="background-color: #0074D9"></button>
+            <button class="btn color-btn" type="button" id="FFDC00" style="background-color: #FFDC00"></button>
+            <button class="btn color-btn" type="button" id="2ECC40" style="background-color: #2ECC40"></button>
+            <button class="btn color-btn" type="button" id="111111" style="background-color: #111111"></button>
+            <button class="btn color-btn" type="button" id="AAAAAA" style="background-color: #AAAAAA"></button>
+            <button class="btn color-btn" type="button" id="B10DC9" style="background-color: #B10DC9"></button>
+            <button class="btn color-btn" type="button" id="FF851B" style="background-color: #FF851B"></button>
+            <button class="btn color-btn" type="button" id="A04000" style="background-color: #A04000"></button>
+            <button class="btn color-btn" type="button" id="FDFEFE" style="background-color: #FDFEFE"></button>
+            <button class="btn color-btn" type="button" id="85C1E9" style="background-color: #85C1E9"></button>
+            <button class="btn color-btn" type="button" id="4A235A" style="background-color: #4A235A"></button>
+        </div>
+
+        <div class="col-sm my-auto">
+            <button type="button" id="brush" class="btn tool-btn btn-light"><img src="./pencil.png" alt="Pencil"></button>
+            <button type="button" id="eraser" class="btn tool-btn btn-light"><img src="./eraser.png" alt="Eraser"></button>
+        </div>
+
+        <div class="col-sm my-auto">
+            <button type="button" id="2" class="btn size-btn btn-light"><span class="size-dot dot-2"></span></button>
+            <button type="button" id="8" class="btn size-btn btn-light"><span class="size-dot dot-8"></span></button>
+            <button type="button" id="16" class="btn size-btn btn-light"><span class="size-dot dot-16"></span></button>
+            <button type="button" id="32" class="btn size-btn btn-light"><span class="size-dot dot-32"></span></button>
+            <button type="button" id="48" class="btn size-btn btn-light"><span class="size-dot dot-48"></span></button>
+        </div>
+
     </div>
 </div>
 
-<div class="column">
-        <canvas id="drawCanvas" width="800" height="600"></canvas>
+<div class="container">
+    <div class="row">
+        <div id="canvas-wrapper" class="col-sm">
+            <div id="canvas">
+                <canvas id="drawCanvas" width="800" height="600"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="column">
-    <button id="clear" type="button" class="clear-button">Clear Canvas</button>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <button type="button" id="clear" class="btn btn-warning">Reset drawing</button>
+        </div>
+    </div>
 </div>
 
-
-<script>
-    $(document).ready(function () {
-
-        let ctx = document.getElementById('drawCanvas').getContext('2d')
-        ctx.strokeStyle = '#FF4136'
-        ctx.lineWidth = 8
-        ctx.lineCap = 'round'
-
-        let mouseDown = false
-        let mouseX = 0
-        let mouseY = 0
-
-        function setSize(size) {
-            ctx.lineWidth = size
-            $('#brush-size-text').text("Brush size: " + size + 'px')
-        }
-
-        function drawLine(fromX, fromY, toX, toY) {
-            let fixerNum = (ctx.lineWidth / 2)
-            ctx.beginPath()
-            ctx.moveTo(fromX + fixerNum, fromY + fixerNum)
-            ctx.lineTo(toX + fixerNum, toY + fixerNum)
-            ctx.stroke()
-        }
-
-        // Follow mouse events
-        $('#drawCanvas').mousedown(function (event) {
-            mouseDown = true
-
-            let fixerNum = (ctx.lineWidth / 2)
-
-            ctx.beginPath()
-            ctx.arc(event.offsetX + fixerNum, event.offsetY + fixerNum, 1, 0, 2 * Math.PI)
-            ctx.stroke()
-
-            mouseX = event.offsetX
-            mouseY = event.offsetY
-
-        }).mousemove(function (event) {
-            if (mouseDown) {
-                drawLine(mouseX, mouseY, event.offsetX, event.offsetY)
-                mouseX = event.offsetX
-                mouseY = event.offsetY
-            }
-        }).mouseup(function () {
-            mouseDown = false
-        }).mouseenter(function () {
-            let color = ctx.strokeStyle.toUpperCase().slice(1)
-            $(this).css('cursor', `url('./cursors/${color}-${ctx.lineWidth}.png'), pointer`)
-        }).mouseleave(function () {
-            $(this).css('cursor', 'auto')
-        })
-
-        // Change color
-        $('.color-button').click(function () {
-            ctx.strokeStyle = $(this).attr('id')
-        })
-
-        $('#brush-size').on('input', function (event) {
-            switch(parseInt(event.target.value)) {
-                case 1 :
-                    setSize(2)
-                break
-                case 2 :
-                    setSize(8)
-                break
-                case 3 :
-                    setSize(16)
-                break
-                case 4 :
-                    setSize(32)
-                break
-                case 5 :
-                    setSize(48)
-                    break
-                default:
-                    setSize(1)
-            }
-        })
-
-        // Clear canvas
-        $('#clear').click(function () {
-            ctx.clearRect(0, 0, 800, 600)
-        })
-    })
-</script>
+<script src="./draw.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </body>
 </html>

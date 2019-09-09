@@ -1,27 +1,97 @@
-.column {
-    width: 60%;
+body {
+    background: url("https://storage.needpix.com/rsynced_images/floral-pattern-background-1493.jpg");
+    background-size: auto;
+    background-repeat: repeat;
+}
+
+.container {
     margin: 16px auto;
+}
+
+.col-sm {
     text-align: center;
 }
 
-.size-slider {
-    cursor: pointer;
+.toolbar {
+    background-color: #001f3f;
+    border-radius: 6px;
+    padding: 16px;
+}
+
+.color-btn {
+    width: 48px;
+    height: 48px;
+    margin: 4px 2px;
+}
+
+.tool-btn {
+    height: 54px;
+    width: 54px;
+    margin: 4px 2px;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.size-btn {
+    height: 54px;
+    width: 54px;
+    margin: 4px 2px;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.size-dot {
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .clear-button {
-    margin-bottom: 32px;
     border: 1px solid black;
 }
 
-.color-button {
-    cursor: pointer;
-    width: 75px;
-    height: 40px;
-    margin: 0 10px;
+.dot-48 {
+    height: 48px;
+    width: 48px;
+}
+
+.dot-32 {
+    height: 32px;
+    width: 32px;
+}
+
+.dot-16 {
+    height: 16px;
+    width: 16px;
+}
+
+.dot-8 {
+    height: 8px;
+    width: 8px;
+}
+
+.dot-2 {
+    height: 2px;
+    width: 2px;
+}
+
+
+#canvas-wrapper {
+    margin: 0 auto;
+    background-color: #001f3f;
+    max-width: 804px;
+    max-height: 604px;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+#canvas {
+    background-color: #ffffff;
+    width: 800px;
+    height: 600px;
 }
 
 #drawCanvas {
-    -webkit-box-shadow: 0px 0px 10px 1px rgba(170,170,170,1);
-    -moz-box-shadow: 0px 0px 10px 1px rgba(170,170,170,1);
-    box-shadow: 0px 0px 10px 1px rgba(170,170,170,1);
+    cursor: pointer;
 }
